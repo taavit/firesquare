@@ -23,5 +23,5 @@ section[role="region"] > header:first-child .icon-update {
 
 section[role="region"] > header:first-child .icon-search {
   background: url("../components/gaia-bb/widgets/toolbars/images/icons/search.png") no-repeat scroll center center transparent;
-  !background-image: url("../components/gaia-bb/widgets/toolbars/images/icons/search.png");
+  /*background-image: url("../components/gaia-bb/widgets/toolbars/images/icons/search.png");*/
 }

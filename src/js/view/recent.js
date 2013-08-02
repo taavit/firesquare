@@ -5,19 +5,27 @@ define([
   'view/venue',
   'view/searchVenue',
   'collection/recent',
-  'model/venue'
-], function (template, checkinTemplate, Drawer, Venue, SearchVenue, Recent, VenueModel) {
+  'model/venue',
+  'lib/pullToRefresh'
+], function (template, checkinTemplate, Drawer, Venue, SearchVenue, Recent, VenueModel, pullToRefresh) {
   'use strict';
   var _drawer,
     _recent,
     _fetch,
     _remove,
     _add,
-    _update;
+    _update,
+    _recentElement;
 
   function _searchVenue(event) {
     event.preventDefault();
     return new SearchVenue(_drawer);
+  }
+
+  function _pullToRefresh(event) {
+    if (event.detail.direction === 'down' && document.querySelector('div[role=main]').scrollTop === 0) {
+      _update();
+    }
   }
 
   /**
@@ -41,6 +49,9 @@ define([
     $('body > section > header').prepend('<menu type="toolbar"><a href="#"><span class="icon icon-update">add</span></a><a href="#"><span class="icon icon-search">add</span></a></menu>');
     $('body > section > header > menu > a .icon-update').on('click', _update);
     $('body > section > header > menu > a .icon-search').on('click', _searchVenue);
+    _recentElement = document.getElementsByClassName('recent')[0];
+    pullToRefresh.registerPullToRefreshEvent(_recentElement);
+    _recentElement.addEventListener('pull', _pullToRefresh);
   }
 
   /**
