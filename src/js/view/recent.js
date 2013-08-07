@@ -22,6 +22,14 @@ define([
     return new SearchVenue(_drawer);
   }
 
+  /**
+   Method is invoked when when recent list is pulled.
+
+   @event _pullToRefresh
+   @for Recent
+   @param {Event} event Event object passed.
+   @private
+  */
   function _pullToRefresh(event) {
     if (event.detail.direction === 'down' && document.querySelector('div[role=main]').scrollTop === 0) {
       _update();
@@ -50,7 +58,9 @@ define([
     $('body > section > header > menu > a .icon-update').on('click', _update);
     $('body > section > header > menu > a .icon-search').on('click', _searchVenue);
     _recentElement = document.getElementsByClassName('recent')[0];
+    //Register handling pull event to object.
     pullToRefresh.registerPullToRefreshEvent(_recentElement);
+    //Add handler for registered event.
     _recentElement.addEventListener('pull', _pullToRefresh);
   }
 
