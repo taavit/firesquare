@@ -1,7 +1,7 @@
 {
   "options": {
     "paths": "src/js",
-    "exclude": "src/js/lib",
+    "exclude": "src/js/lib,src/components",
     "outdir": "dist/doc"
   }
 }

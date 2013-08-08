@@ -7,6 +7,9 @@
     "backbone": "~1.0",
     "underscore": "~1.4",
     "qunit": "~1.12",
-    "jquery-mockjax": "~1.5"
+    "jquery-mockjax": "~1.5",
+    "polymer-tools": "https://github.com/Polymer/tools.git",
+    "pointer-events" :"https://github.com/Polymer/PointerEvents.git#stable",
+    "pointer-gestures": "https://github.com/Polymer/PointerGestures.git#stable"
   }
 }

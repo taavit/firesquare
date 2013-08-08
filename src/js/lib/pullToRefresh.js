@@ -1,44 +1,57 @@
 define([], function () {
   'use strict';
-  function _registerPullToRefreshEvent(element) {
-    var sx, sy, ex, ey, dx, dy;
 
-    function _start(event) {
-      sx = event.touches[0].clientX;
-      sy = event.touches[0].clientY;
+  /**
+  Event handler registration function.
+
+  @method _registerPullToRefreshEvent
+  @namespace Lib
+  @param element {HTMLElement} Element to attach event handler.
+  @private
+  @for pullToRefresh
+  */
+  function _registerPullToRefreshEvent(element) {
+
+    /**
+    Event handler for track event. This function control track direction, and if x-asis gesture is detected, cancels it.
+
+    @method _track
+    @param event {Object} Track event object.
+    @private
+    @for pullToRefresh
+    */
+    function _track(event) {
+      if (event.yDirection !== 1 || Math.abs(event.ddx) > Math.abs(event.ddy)) {
+        event.cancel();
+      }
     }
 
+    /**
+    Event handler for trackend event. If Pull gesture was detected `pull` event id dispatched.
+
+    @method _end
+    @param event {Object} Track event object.
+    @private
+    @for pullToRefresh
+    */
     function _end(event) {
-      var direction = '',
-        pulled = null;
-      ex = event.touches[0].clientX;
-      ey = event.touches[0].clientY;
-      dx = ex - sx;
-      dy = ey - sy;
-        //Detect if swipe appear
-      if (Math.abs(dx) > 20 || Math.abs(dy) > 20) {
-        if (Math.abs(dx) > Math.abs(dy)) {
-          if (dx > 0) {
-            direction = 'right';
-          } else {
-            direction = 'left';
-          }
-        } else {
-          if (dy > 0) {
-            direction = 'down';
-          } else {
-            direction = 'up';
-          }
-        }
-        pulled = new window.CustomEvent('pull', {'detail': {'direction': direction}});
+      event.preventTap();
+      var pulled = new window.CustomEvent('pull');
+      if (event.dy > 30 && Math.abs(event.dx) < event.dy) {
         element.dispatchEvent(pulled);
       }
     }
-    element.addEventListener('touchstart', _start);
-    element.addEventListener('touchend', _end);
-    element.dataset.swipeRegistered = true;
+    element.addEventListener('trackend', _end);
+    element.addEventListener('track', _track);
   }
+
   return {
+    /**
+    Method points to {{#crossLink "Lib.pullToRefresh/_registerPullToRefreshEvent"}}{{/crossLink}}
+
+    @method registerPullToRefreshEvent
+    @for pullToRefresh
+    */
     'registerPullToRefreshEvent' : _registerPullToRefreshEvent
   };
 });

@@ -8,6 +8,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-bg-shell');
   grunt.loadNpmTasks('grunt-contrib-qunit');
+  grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('src/manifest.webapp'),
@@ -67,6 +68,11 @@ module.exports = function(grunt) {
               'components/backbone/backbone-min.js',
               'components/underscore/underscore-min.js',
               'components/jquery/jquery.min.js',
+              'components/pointer-events/pointerevents.js',
+              'components/pointer-events/src/*.js',
+              'components/pointer-gestures/pointergestures.js',
+              'components/pointer-gestures/src/*.js',
+              'components/polymer-tools/loader/loader.js',
               'components/requirejs/require.js',
               'components/gaia-bb/menus_dialogs/confirm.css',
               'components/gaia-bb/menus_dialogs/confirm/images/**',
@@ -113,6 +119,19 @@ module.exports = function(grunt) {
       'default': [
         'tests/index.html'
       ]
+    },
+    yuidoc: {
+      compile: {
+        name: '<%= pkg.name %>',
+        description: '<%= pkg.description %>',
+        version: '<%= pkg.version %>',
+        url: '<%= pkg.homepage %>',
+        options: {
+          paths: 'src/js',
+          exclude: 'src/components',
+          outdir: 'dist/docs'
+        }
+      }
     }
   });
 
@@ -124,6 +143,7 @@ module.exports = function(grunt) {
       'clean',
       'requirejs',
       'copy',
+      'yuidoc',
       'compress'
     ]);
 

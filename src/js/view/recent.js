@@ -15,7 +15,7 @@ define([
     _remove,
     _add,
     _update,
-    _recentElement;
+    _recentElement = null;
 
   function _searchVenue(event) {
     event.preventDefault();
@@ -23,15 +23,14 @@ define([
   }
 
   /**
-   Method is invoked when when recent list is pulled.
+   Method is invoked when recent list is pulled.
 
    @event _pullToRefresh
    @for Recent
-   @param {Event} event Event object passed.
    @private
   */
-  function _pullToRefresh(event) {
-    if (event.detail.direction === 'down' && document.querySelector('div[role=main]').scrollTop === 0) {
+  function _pullToRefresh() {
+    if (document.querySelector('div[role=main]').scrollTop === 0) {
       _update();
     }
   }
@@ -54,10 +53,10 @@ define([
     _recent.on('add', _add);
     _fetch = _recent.fetch();
 
-    $('body > section > header').prepend('<menu type="toolbar"><a href="#"><span class="icon icon-update">add</span></a><a href="#"><span class="icon icon-search">add</span></a></menu>');
-    $('body > section > header > menu > a .icon-update').on('click', _update);
-    $('body > section > header > menu > a .icon-search').on('click', _searchVenue);
-    _recentElement = document.getElementsByClassName('recent')[0];
+//    $('body > section > header').prepend('<menu type="toolbar"><a href="#"><span class="icon icon-update">add</span></a></menu>');
+//    $('body > section > header > menu > a .icon-update').on('tap', _update);
+    $('body > section > header > menu > a .icon-search').on('tap', _searchVenue);
+    _recentElement = document.getElementById(this.id);
     //Register handling pull event to object.
     pullToRefresh.registerPullToRefreshEvent(_recentElement);
     //Add handler for registered event.
@@ -150,8 +149,8 @@ define([
     }
 
     //Add on click event
-    $('.recent li').off('click', _showVenue);
-    $('.recent li').on('click', _showVenue);
+    $('.recent li').off('tap', _showVenue);
+    $('.recent li').on('tap', _showVenue);
   };
 
   /**
@@ -168,9 +167,9 @@ define([
       _fetch.abort();
     }
     _recent.off('add', _add);
-    $('body > section > header > menu > a').off('click', _searchVenue);
+    $('body > section > header > menu > a').off('tap', _searchVenue);
     $('body > section > header > menu').remove();
-    $('.recent li').off('click', _showVenue);
+    $('.recent li').off('tap', _showVenue);
   };
 
   /**
@@ -195,6 +194,7 @@ define([
       @method remove
       @for Recent
     */
-    remove: _remove
+    remove: _remove,
+    id : 'recent-view'
   });
 });
