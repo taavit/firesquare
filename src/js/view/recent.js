@@ -53,8 +53,6 @@ define([
     _recent.on('add', _add);
     _fetch = _recent.fetch();
 
-//    $('body > section > header').prepend('<menu type="toolbar"><a href="#"><span class="icon icon-update">add</span></a></menu>');
-//    $('body > section > header > menu > a .icon-update').on('tap', _update);
     $('body > section > header > menu > a .icon-search').on('tap', _searchVenue);
     _recentElement = document.getElementById(this.id);
     //Register handling pull event to object.
