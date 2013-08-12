@@ -41,8 +41,8 @@ define([], function () {
         element.dispatchEvent(pulled);
       }
     }
-    element.addEventListener('trackend', _end);
-    element.addEventListener('track', _track);
+    element.addEventListener('trackend', _end, true);
+    element.addEventListener('track', _track, true);
   }
 
   return {

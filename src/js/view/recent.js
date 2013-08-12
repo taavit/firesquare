@@ -58,7 +58,7 @@ define([
     //Register handling pull event to object.
     pullToRefresh.registerPullToRefreshEvent(_recentElement);
     //Add handler for registered event.
-    _recentElement.addEventListener('pull', _pullToRefresh);
+    _recentElement.addEventListener('pull', _pullToRefresh, true);
   }
 
   /**
