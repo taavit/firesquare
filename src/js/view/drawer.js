@@ -12,7 +12,9 @@ define([
     _drawer,
     _unloadView,
     _windowStack = [],
-    _removeAllWindow;
+    _removeAllWindow,
+    _drawerEvent,
+    _drawerElement = null;
 
   /**
     Method is called when Drawer object is initialized, but DOM drawer is initialized only once.
@@ -27,8 +29,13 @@ define([
   function _initialize(remove, update) {
     if (!_isLoaded) {
       _isLoaded = true;
-      $('body').html(_.template(template, CurrentUser));
-      $('body > section > header > a').on('click', _drawer);
+
+      while (document.body.firstChild) {
+        document.body.removeChild(document.body.firstChild);
+      }
+      document.body.insertAdjacentHTML('afterbegin', _.template(template, CurrentUser));
+      _drawerElement = document.getElementById('drawer-activator');
+      _drawerElement.addEventListener('click', _drawerEvent);
     }
 
     _unloadView(remove, update);
@@ -67,7 +74,6 @@ define([
     @private
   */
   _drawer = function(hide) {
-
     var region = document.querySelector("body > section");
 
     if (region.dataset.state === 'drawer') {
@@ -76,6 +82,11 @@ define([
       region.dataset.state = 'drawer';
     }
     return false;
+  };
+
+  _drawerEvent = function(event) {
+    event.preventDefault();
+    _drawer();
   };
 
   /**
@@ -91,7 +102,7 @@ define([
       _isLoaded = false;
       _removeAllWindow();
       _unloadView();
-      $('body > section > header > a').off('click', _drawer);
+      _drawerElement.removeEventListener('click', _drawer);
     }
   }
 
@@ -204,7 +215,7 @@ define([
       timeout = 2000;
     }
 
-    $('body').append(_.template(statusTemplate, {message: message}));
+    document.body.insertAdjacentHTML('beforeend', _.template(statusTemplate, {message: message}));
     window.setTimeout(function() {
       $('section[role="status"]').first().remove();
     }, timeout);

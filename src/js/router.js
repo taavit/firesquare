@@ -73,7 +73,7 @@ define([
         if (!(_currentView instanceof Login) &&
             !(_currentView instanceof Logging)) {
           CurrentUser.set('isAuth', false);
-          Service.foursquare.set('access_token', undefined);
+          Service.foursquare.set('access_token', null);
           Backbone.history.navigate('/login', true);
         }
       }//,
